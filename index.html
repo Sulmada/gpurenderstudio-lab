@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SmartPrep Lab</title>
+
 <style>
 body{
 margin:0;
@@ -12,28 +13,35 @@ background:#0f172a;
 color:white;
 text-align:center;
 }
+
 header{
-padding:25px;
-font-size:24px;
+padding:22px;
+font-size:22px;
 font-weight:bold;
 background:#111827;
+letter-spacing:1px;
 }
+
 .hero{
 padding:90px 20px;
 }
+
 h1{
 font-size:48px;
 margin-bottom:10px;
 }
+
 p{
 font-size:20px;
-opacity:0.85;
-max-width:700px;
+opacity:0.88;
+max-width:760px;
 margin:auto;
+line-height:1.6;
 }
+
 button{
-margin-top:30px;
-padding:15px 28px;
+margin-top:35px;
+padding:16px 30px;
 font-size:18px;
 border:none;
 border-radius:10px;
@@ -41,6 +49,11 @@ cursor:pointer;
 background:#2563eb;
 color:white;
 }
+
+button:hover{
+background:#1d4ed8;
+}
+
 .cards{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
@@ -49,48 +62,63 @@ padding:40px;
 max-width:1100px;
 margin:auto;
 }
+
 .card{
 background:#1e293b;
 padding:25px;
 border-radius:14px;
 }
+
+.card h3{
+margin-top:0;
+}
+
 footer{
 padding:40px;
 opacity:0.6;
+font-size:14px;
 }
 </style>
 </head>
+
 <body>
 
-<header>LAB PROJECT</header>
+<header>SMARTPREP LAB</header>
 
 <section class="hero">
-<h1>SmartPrep Beta</h1>
-<p>Adaptive training platform designed to improve exam performance through smart progression.</p>
-<button onclick="alert('Assessment module coming next.')">Start Beta Test</button>
+<h1>Träna smart inför högskoleprovet</h1>
+
+<p>
+En modern träningsplattform för dig som vill höja resultatet genom tydlig progression,
+snabbare problemlösning och bättre provstrategi.
+</p>
+
+<button onclick="alert('Diagnostiskt test lanseras snart.')">
+Starta testversion
+</button>
 </section>
 
 <section class="cards">
 
 <div class="card">
-<h3>Strength Analysis</h3>
-<p>Identify where score gains come fastest.</p>
+<h3>Nivåanalys</h3>
+<p>Se var dina största poängmöjligheter finns just nu.</p>
 </div>
 
 <div class="card">
-<h3>Math Builder</h3>
-<p>Build confidence from fundamentals upward.</p>
+<h3>Kvantitativ träning</h3>
+<p>Matte, logik, tabeller och problemlösning steg för steg.</p>
 </div>
 
 <div class="card">
-<h3>Verbal Boost</h3>
-<p>Maximize already strong verbal potential.</p>
+<h3>Verbal utveckling</h3>
+<p>Ord, läsförståelse och strategier för högre resultat.</p>
 </div>
 
 </section>
 
 <footer>
-Experimental Lab Platform
+Beta-version av SmartPrep Lab
 </footer>
 
 </body>
