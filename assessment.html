@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartPrep Lab - Nivåanalys</title>
+<style>
+:root{
+  --bg:#0f172a;
+  --panel:#111827;
+  --panel-2:#1e293b;
+  --text:#ffffff;
+  --muted:rgba(255,255,255,0.78);
+  --soft:rgba(255,255,255,0.12);
+  --blue:#2563eb;
+  --blue-hover:#1d4ed8;
+  --green:#16a34a;
+  --yellow:#d97706;
+  --red:#dc2626;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header{
+  padding:20px;
+  background:var(--panel);
+  text-align:center;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+main{
+  max-width:900px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+}
+
+.screen{
+  display:none;
+}
+
+.screen.active{
+  display:block;
+}
+
+.card{
+  background:var(--panel-2);
+  border-radius:16px;
+  padding:26px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.18);
+}
+
+.hero{
+  text-align:center;
+  padding:24px 8px 8px;
+}
+
+.hero h1{
+  font-size:40px;
+  margin:0 0 14px 0;
+}
+
+.hero p{
+  max-width:720px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.6;
+}
+
+.meta{
+  margin-top:28px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+}
+
+.badge{
+  background:rgba(37,99,235,0.16);
+  border:1px solid rgba(37,99,235,0.35);
+  color:#dbeafe;
+  padding:10px 14px;
+  border-radius:999px;
+  font-size:14px;
+}
+
+.actions{
+  margin-top:30px;
+  text-align:center;
+}
+
+button{
+  background:var(--blue);
+  color:white;
+  border:none;
+  border-radius:12px;
+  padding:15px 24px;
+  font-size:17px;
+  cursor:pointer;
+  transition:background 0.2s ease;
+}
+
+button:hover{
+  background:var(--blue-hover);
+}
+
+button.secondary{
+  background:transparent;
+  border:1px solid var(--soft);
+  color:white;
+}
+
+button.secondary:hover{
+  background:rgba(255,255,255,0.06);
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  margin-bottom:18px;
+  flex-wrap:wrap;
+}
+
+.progress-wrap{
+  flex:1;
+  min-width:220px;
+}
+
+.progress-label{
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.progress{
+  width:100%;
+  height:10px;
+  background:rgba(255,255,255,0.08);
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:var(--blue);
+  transition:width 0.25s ease;
+}
+
+.question-type{
+  display:inline-block;
+  font-size:13px;
+  color:#bfdbfe;
+  background:rgba(37,99,235,0.16);
+  border:1px solid rgba(37,99,235,0.35);
+  padding:7px 10px;
+  border-radius:999px;
+  margin-bottom:16px;
+}
+
+.question-text{
+  font-size:24px;
+  line-height:1.5;
+  margin-bottom:24px;
+}
+
+.reading-box{
+  background:rgba(255,255,255,0.05);
+  border-left:4px solid rgba(255,255,255,0.15);
+  padding:16px;
+  border-radius:10px;
+  color:var(--muted);
+  line-height:1.7;
+  margin-bottom:22px;
+  text-align:left;
+}
+
+.options{
+  display:grid;
+  gap:12px;
+}
+
+.option{
+  width:100%;
+  text-align:left;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.09);
+  color:white;
+  border-radius:12px;
+  padding:16px 16px;
+  font-size:16px;
+}
+
+.option:hover{
+  background:rgba(255,255,255,0.08);
+}
+
+.option.selected{
+  border-color:rgba(37,99,235,0.8);
+  background:rgba(37,99,235,0.2);
+}
+
+.nav-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:24px;
+}
+
+.result-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+  margin-top:24px;
+}
+
+.result-card{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:18px;
+}
+
+.result-card h3{
+  margin-top:0;
+  margin-bottom:8px;
+  font-size:18px;
+}
+
+.score{
+  font-size:30px;
+  font-weight:bold;
+  margin:8px 0;
+}
+
+.score-note{
+  color:var(--muted);
+  line-height:1.6;
+  font-size:15px;
+}
+
+.recommendation{
+  margin-top:24px;
+  background:rgba(37,99,235,0.14);
+  border:1px solid rgba(37,99,235,0.35);
+  border-radius:16px;
+  padding:22px;
+}
+
+.recommendation h2{
+  margin-top:0;
+  margin-bottom:12px;
+}
+
+.recommendation p{
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.list{
+  text-align:left;
+  margin:14px auto 0;
+  max-width:680px;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.center{
+  text-align:center;
+}
+
+.small{
+  font-size:14px;
+  color:var(--muted);
+}
+
+footer{
+  text-align:center;
+  padding:30px 16px 40px;
+  color:rgba(255,255,255,0.55);
+  font-size:14px;
+}
+
+@media (max-width:640px){
+  .hero h1{
+    font-size:31px;
+  }
+
+  .question-text{
+    font-size:21px;
+  }
+
+  .nav-row{
+    flex-direction:column;
+  }
+
+  .nav-row button{
+    width:100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>SMARTPREP LAB</header>
+
+<main>
+
+  <section id="introScreen" class="screen active">
+    <div class="card hero">
+      <h1>Snabb nivåanalys</h1>
+      <p>
+        Gör en kort analys av din nuvarande nivå inom kvantitativa och verbala delar.
+        Testet tar ungefär 4 till 6 minuter och används för att rekommendera en lämplig startnivå.
+      </p>
+
+      <div class="meta">
+        <div class="badge">8 frågor</div>
+        <div class="badge">Svenska högskoleprovet</div>
+        <div class="badge">Direkt resultat</div>
+      </div>
+
+      <div class="actions">
+        <button onclick="startAssessment()">Starta nivåanalys</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="questionScreen" class="screen">
+    <div class="topbar">
+      <div class="progress-wrap">
+        <div class="progress-label" id="progressLabel">Fråga 1 av 8</div>
+        <div class="progress">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+      </div>
+      <div class="small" id="questionCounter">Kvantitativ</div>
+    </div>
+
+    <div class="card">
+      <div id="questionType" class="question-type"></div>
+      <div id="readingBox" class="reading-box" style="display:none;"></div>
+      <div id="questionText" class="question-text"></div>
+      <div id="optionsContainer" class="options"></div>
+
+      <div class="nav-row">
+        <button class="secondary" onclick="prevQuestion()">Föregående</button>
+        <button onclick="nextQuestion()">Nästa</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="resultScreen" class="screen">
+    <div class="card">
+      <div class="center">
+        <h1>Din profil</h1>
+        <p class="small">
+          Resultatet visar en förenklad nulägesbild och används för att rekommendera lämplig startnivå.
+        </p>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-card">
+          <h3>Kvantitativ nivå</h3>
+          <div id="quantScoreLabel" class="score"></div>
+          <div id="quantScoreNote" class="score-note"></div>
+        </div>
+
+        <div class="result-card">
+          <h3>Verbal nivå</h3>
+          <div id="verbalScoreLabel" class="score"></div>
+          <div id="verbalScoreNote" class="score-note"></div>
+        </div>
+
+        <div class="result-card">
+          <h3>Total profil</h3>
+          <div id="overallLabel" class="score"></div>
+          <div id="overallNote" class="score-note"></div>
+        </div>
+      </div>
+
+      <div class="recommendation">
+        <h2 id="trackTitle"></h2>
+        <p id="trackText"></p>
+
+        <div class="list" id="trackList"></div>
+
+        <div class="actions">
+          <button onclick="restartAssessment()">Gör testet igen</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Beta-version av SmartPrep Lab</footer>
+
+<script>
+const questions = [
+  {
+    type: "Kvantitativ",
+    subtype: "Procent",
+    text: "En vara kostar 800 kr. Priset sänks med 25 procent. Vad blir det nya priset?",
+    options: ["600 kr", "620 kr", "650 kr", "680 kr"],
+    correct: 0,
+    category: "quant"
+  },
+  {
+    type: "Kvantitativ",
+    subtype: "Bråk",
+    text: "Vilket alternativ är lika med 3/4?",
+    options: ["0,25", "0,5", "0,75", "1,25"],
+    correct: 2,
+    category: "quant"
+  },
+  {
+    type: "Kvantitativ",
+    subtype: "Algebra",
+    text: "Om 2x + 3 = 11, vilket värde har x?",
+    options: ["2", "3", "4", "5"],
+    correct: 2,
+    category: "quant"
+  },
+  {
+    type: "Kvantitativ",
+    subtype: "Tabelltolkning",
+    text: "I en klass fick 8 elever betyget C, 6 elever betyget B och 4 elever betyget A. Hur många elever finns det totalt i gruppen?",
+    options: ["16", "17", "18", "19"],
+    correct: 2,
+    category: "quant"
+  },
+  {
+    type: "Kvantitativ",
+    subtype: "Talmönster",
+    text: "Vilket tal ska stå i stället för frågetecknet? 2, 4, 8, 16, ?",
+    options: ["20", "24", "30", "32"],
+    correct: 3,
+    category: "quant"
+  },
+  {
+    type: "Verbal",
+    subtype: "Ord",
+    text: "Vilket ord betyder ungefär samma sak som noggrann?",
+    options: ["slarvig", "omsorgsfull", "tveksam", "hastig"],
+    correct: 1,
+    category: "verbal"
+  },
+  {
+    type: "Verbal",
+    subtype: "Läsförståelse",
+    reading: "Många tror att motivation alltid måste komma först. I praktiken uppstår motivation ofta efter att man har börjat. Små framsteg kan göra att en uppgift känns mer meningsfull, vilket i sin tur ökar viljan att fortsätta.",
+    text: "Vilken slutsats stöds bäst av texten?",
+    options: [
+      "Motivation är oftast onödig för lärande.",
+      "Man bör vänta med att börja tills motivationen är stark.",
+      "Handling kan bidra till att skapa motivation.",
+      "Små framsteg har liten betydelse för studieresultat."
+    ],
+    correct: 2,
+    category: "verbal"
+  },
+  {
+    type: "Verbal",
+    subtype: "Ordförståelse",
+    text: "Vad betyder ordet tillfällig i meningen: Lösningen var bara tillfällig?",
+    options: ["dyr", "kortvarig", "ovanlig", "osäker"],
+    correct: 1,
+    category: "verbal"
+  }
+];
+
+let currentQuestion = 0;
+let answers = new Array(questions.length).fill(null);
+
+function startAssessment(){
+  currentQuestion = 0;
+  document.getElementById("introScreen").classList.remove("active");
+  document.getElementById("resultScreen").classList.remove("active");
+  document.getElementById("questionScreen").classList.add("active");
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = questions[currentQuestion];
+
+  document.getElementById("progressLabel").textContent = `Fråga ${currentQuestion + 1} av ${questions.length}`;
+  document.getElementById("questionCounter").textContent = q.type;
+  document.getElementById("questionType").textContent = `${q.type} - ${q.subtype}`;
+  document.getElementById("questionText").textContent = q.text;
+
+  const progressPercent = ((currentQuestion + 1) / questions.length) * 100;
+  document.getElementById("progressBar").style.width = `${progressPercent}%`;
+
+  const readingBox = document.getElementById("readingBox");
+  if(q.reading){
+    readingBox.style.display = "block";
+    readingBox.textContent = q.reading;
+  } else {
+    readingBox.style.display = "none";
+    readingBox.textContent = "";
+  }
+
+  const optionsContainer = document.getElementById("optionsContainer");
+  optionsContainer.innerHTML = "";
+
+  q.options.forEach((option, index) => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    if(answers[currentQuestion] === index){
+      btn.classList.add("selected");
+    }
+    btn.textContent = option;
+    btn.onclick = () => {
+      answers[currentQuestion] = index;
+      renderQuestion();
+    };
+    optionsContainer.appendChild(btn);
+  });
+}
+
+function prevQuestion(){
+  if(currentQuestion > 0){
+    currentQuestion--;
+    renderQuestion();
+  }
+}
+
+function nextQuestion(){
+  if(answers[currentQuestion] === null){
+    alert("Välj ett svar innan du går vidare.");
+    return;
+  }
+
+  if(currentQuestion < questions.length - 1){
+    currentQuestion++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function labelQuant(score){
+  if(score <= 2){
+    return {
+      label: "Grund",
+      note: "Du har sannolikt nytta av att börja med tydliga grunder och stegvis problemlösning."
+    };
+  } else if(score <= 4){
+    return {
+      label: "Stabil",
+      note: "Du har en fungerande grund och kan sannolikt vinna poäng genom mer provnära träning."
+    };
+  } else {
+    return {
+      label: "Stark",
+      note: "Du visar en stark kvantitativ startnivå och kan främst arbeta med tempo, precision och strategi."
+    };
+  }
+}
+
+function labelVerbal(score){
+  if(score <= 1){
+    return {
+      label: "Grund",
+      note: "Du kan vinna på att stärka ordkunskap, lässtrategi och säkerhet i språkliga frågor."
+    };
+  } else if(score === 2){
+    return {
+      label: "Stabil",
+      note: "Du visar god verbal grund och kan utvecklas vidare med mer provnära övning."
+    };
+  } else {
+    return {
+      label: "Stark",
+      note: "Du visar mycket god verbal nivå och kan arbeta vidare med precision och uthållighet."
+    };
+  }
+}
+
+function showResults(){
+  let quantCorrect = 0;
+  let verbalCorrect = 0;
+
+  questions.forEach((q, i) => {
+    if(answers[i] === q.correct){
+      if(q.category === "quant"){
+        quantCorrect++;
+      } else {
+        verbalCorrect++;
+      }
+    }
+  });
+
+  const quant = labelQuant(quantCorrect);
+  const verbal = labelVerbal(verbalCorrect);
+
+  document.getElementById("quantScoreLabel").textContent = quant.label;
+  document.getElementById("quantScoreNote").textContent = `${quant.note} (${quantCorrect} av 5 rätt)`;
+
+  document.getElementById("verbalScoreLabel").textContent = verbal.label;
+  document.getElementById("verbalScoreNote").textContent = `${verbal.note} (${verbalCorrect} av 3 rätt)`;
+
+  let overallLabel = "";
+  let overallNote = "";
+  let trackTitle = "";
+  let trackText = "";
+  let trackListHtml = "";
+
+  if(quantCorrect <= 2){
+    overallLabel = "Foundation";
+    overallNote = "Den största möjliga poängökningen finns sannolikt i att bygga upp kvantitativ säkerhet från grunden.";
+    trackTitle = "Rekommenderad start: Grundspåret";
+    trackText = "Det här spåret passar användare som vill bygga upp trygghet inom matematik, tabeller, procent, talförståelse och problemlösning innan mer provnära träning.";
+    trackListHtml = `
+      <strong>Fokus i nästa steg:</strong><br><br>
+      1. Procent och bråk<br>
+      2. Enkel algebra och huvudräkning<br>
+      3. Tydliga steg i textuppgifter<br>
+      4. Lugnt tempo före tidspress
+    `;
+  } else if(quantCorrect >= 3 && verbalCorrect >= 2){
+    overallLabel = "Standard";
+    overallNote = "Du har en bra bas att bygga vidare på. Nästa steg är att träna mer provnära uppgifter och förbättra tempo och träffsäkerhet.";
+    trackTitle = "Rekommenderad start: Standardspåret";
+    trackText = "Det här spåret passar användare som redan har fungerande grund och vill utveckla teknik, fart och säkerhet inför högskoleprovet.";
+    trackListHtml = `
+      <strong>Fokus i nästa steg:</strong><br><br>
+      1. Provliknande kvantitativa frågor<br>
+      2. Ordkunskap och lässtrategi<br>
+      3. Vanliga fällor i svarsalternativ<br>
+      4. Tidsstyrda mini-pass
+    `;
+  } else {
+    overallLabel = "Mixprofil";
+    overallNote = "Du visar olika styrkor i olika delar. En balanserad plan med riktad träning ger sannolikt bäst effekt.";
+    trackTitle = "Rekommenderad start: Balanserat spår";
+    trackText = "Det här spåret passar användare som har tydliga styrkor i vissa moment men behöver jämna ut profilen för att få bättre totalresultat.";
+    trackListHtml = `
+      <strong>Fokus i nästa steg:</strong><br><br>
+      1. Behåll styrkorna genom kort repetition<br>
+      2. Träna mest där poängökningen är störst<br>
+      3. Växla mellan kvantitativt och verbalt<br>
+      4. Arbeta med säkerhet före svårighetsökning
+    `;
+  }
+
+  document.getElementById("overallLabel").textContent = overallLabel;
+  document.getElementById("overallNote").textContent = overallNote;
+  document.getElementById("trackTitle").textContent = trackTitle;
+  document.getElementById("trackText").textContent = trackText;
+  document.getElementById("trackList").innerHTML = trackListHtml;
+
+  document.getElementById("questionScreen").classList.remove("active");
+  document.getElementById("resultScreen").classList.add("active");
+}
+
+function restartAssessment(){
+  answers = new Array(questions.length).fill(null);
+  currentQuestion = 0;
+  document.getElementById("resultScreen").classList.remove("active");
+  document.getElementById("introScreen").classList.add("active");
+}
+</script>
+
+</body>
+</html>
