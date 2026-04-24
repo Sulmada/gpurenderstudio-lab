@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartPrep Lab - Foundation 2</title>
+
+<style>
+:root{
+  --bg:#0f172a;
+  --panel:#111827;
+  --card:#1e293b;
+  --soft:rgba(255,255,255,0.10);
+  --text:#ffffff;
+  --muted:rgba(255,255,255,0.78);
+  --blue:#2563eb;
+  --blue-hover:#1d4ed8;
+  --green:#16a34a;
+  --red:#dc2626;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header{
+  padding:20px;
+  background:var(--panel);
+  text-align:center;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+main{
+  max-width:980px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:26px;
+  margin-bottom:22px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.18);
+}
+
+.hero{
+  text-align:center;
+}
+
+.hero h1{
+  font-size:40px;
+  margin:0 0 14px 0;
+}
+
+.hero p{
+  max-width:780px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.6;
+}
+
+.badges{
+  margin-top:24px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+}
+
+.badge{
+  background:rgba(37,99,235,0.16);
+  border:1px solid rgba(37,99,235,0.35);
+  color:#dbeafe;
+  padding:10px 14px;
+  border-radius:999px;
+  font-size:14px;
+}
+
+h2{
+  margin-top:0;
+}
+
+p, li{
+  line-height:1.7;
+}
+
+.muted{
+  color:var(--muted);
+}
+
+.lesson-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:16px;
+  margin-top:18px;
+}
+
+.lesson-box{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:18px;
+}
+
+.lesson-box h3{
+  margin-top:0;
+}
+
+.method{
+  background:rgba(37,99,235,0.14);
+  border:1px solid rgba(37,99,235,0.35);
+  border-radius:14px;
+  padding:18px;
+  margin-top:16px;
+}
+
+button{
+  background:var(--blue);
+  color:white;
+  border:none;
+  border-radius:12px;
+  padding:14px 22px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:var(--blue-hover);
+}
+
+button.secondary{
+  background:transparent;
+  border:1px solid var(--soft);
+  color:white;
+}
+
+button.secondary:hover{
+  background:rgba(255,255,255,0.06);
+}
+
+.actions{
+  margin-top:24px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+}
+
+.exercise{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:16px;
+}
+
+.exercise h3{
+  margin-top:0;
+  font-size:18px;
+}
+
+.options{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
+
+.option{
+  width:100%;
+  text-align:left;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.09);
+  color:white;
+  border-radius:12px;
+  padding:14px;
+  font-size:16px;
+  line-height:1.5;
+}
+
+.option.selected{
+  border-color:rgba(37,99,235,0.8);
+  background:rgba(37,99,235,0.2);
+}
+
+.feedback{
+  display:none;
+  margin-top:12px;
+  padding:14px;
+  border-radius:12px;
+  line-height:1.6;
+}
+
+.feedback.correct{
+  display:block;
+  background:rgba(22,163,74,0.16);
+  border:1px solid rgba(22,163,74,0.35);
+}
+
+.feedback.wrong{
+  display:block;
+  background:rgba(220,38,38,0.14);
+  border:1px solid rgba(220,38,38,0.35);
+}
+
+.result{
+  display:none;
+  background:rgba(37,99,235,0.14);
+  border:1px solid rgba(37,99,235,0.35);
+  border-radius:16px;
+  padding:22px;
+  margin-top:22px;
+}
+
+.result.active{
+  display:block;
+}
+
+.score{
+  font-size:32px;
+  font-weight:bold;
+  margin:8px 0;
+}
+
+footer{
+  text-align:center;
+  padding:30px 16px 40px;
+  color:rgba(255,255,255,0.55);
+  font-size:14px;
+}
+
+@media (max-width:640px){
+  .hero h1{
+    font-size:31px;
+  }
+
+  .actions{
+    flex-direction:column;
+  }
+
+  .actions button{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>SMARTPREP LAB</header>
+
+<main>
+
+<section class="card hero">
+  <h1>Kvantitativ grund 2</h1>
+  <p>
+    Den här modulen tränar textproblem, tabeller och metodval.
+    Fokus ligger på att snabbt förstå vad frågan frågar efter.
+  </p>
+
+  <div class="badges">
+    <div class="badge">Foundation</div>
+    <div class="badge">10 övningar</div>
+    <div class="badge">Textproblem</div>
+    <div class="badge">HP-förberedande</div>
+  </div>
+
+  <div class="actions">
+    <button onclick="document.getElementById('training').scrollIntoView({behavior:'smooth'})">Starta övningarna</button>
+    <button class="secondary" onclick="window.location.href='foundation.html'">Till modul 1</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Vad tränar du här?</h2>
+
+  <div class="lesson-grid">
+
+    <div class="lesson-box">
+      <h3>Textproblem</h3>
+      <p class="muted">
+        Läs långsamt först. Vad vet du? Vad söker du?
+      </p>
+    </div>
+
+    <div class="lesson-box">
+      <h3>Tabeller</h3>
+      <p class="muted">
+        Jämför rader och kolumner systematiskt.
+      </p>
+    </div>
+
+    <div class="lesson-box">
+      <h3>Metodval</h3>
+      <p class="muted">
+        Ofta räcker uppskattning eller snabb jämförelse.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="method">
+    <h3>Grundmetod</h3>
+    <p>
+      Markera mentalt siffrorna. Läs sista meningen extra noga.
+      Många gör fel för att de svarar på fel fråga.
+    </p>
+  </div>
+</section>
+
+<section id="training" class="card">
+  <h2>Övningar</h2>
+  <p class="muted">
+    Välj svar. Feedback visas direkt.
+  </p>
+
+  <div id="exerciseContainer"></div>
+
+  <div class="actions">
+    <button onclick="showResult()">Visa resultat</button>
+    <button class="secondary" onclick="resetModule()">Börja om</button>
+    <button class="secondary" onclick="window.location.href='foundation3.html'">Nästa modul</button>
+  </div>
+
+  <div id="resultBox" class="result">
+    <h2>Ditt resultat</h2>
+    <div id="scoreText" class="score"></div>
+    <p id="resultText"></p>
+  </div>
+</section>
+
+</main>
+
+<footer>Beta-version av SmartPrep Lab</footer>
+
+<script>
+const exercises = [
+
+{
+q:"En bussbiljett kostar 35 kr. Hur mycket kostar 4 biljetter?",
+options:["120 kr","130 kr","140 kr","150 kr"],
+correct:2,
+explanation:"35 gånger 4 = 140."
+},
+
+{
+q:"En butik säljer 12 pennor för 60 kr. Vad kostar 1 penna?",
+options:["4 kr","5 kr","6 kr","7 kr"],
+correct:1,
+explanation:"60 delat med 12 = 5."
+},
+
+{
+q:"Lisa springer 3 km per dag i 5 dagar. Hur långt springer hon totalt?",
+options:["8 km","10 km","15 km","18 km"],
+correct:2,
+explanation:"3 gånger 5 = 15."
+},
+
+{
+q:"Tabell: Äpplen 20 st, Päron 15 st, Bananer 25 st. Vilken frukt finns flest av?",
+options:["Äpplen","Päron","Bananer","Lika många"],
+correct:2,
+explanation:"25 är högst antal."
+},
+
+{
+q:"Ett tåg avgår 14:20 och kommer fram 15:05. Hur lång tid tar resan?",
+options:["35 min","40 min","45 min","50 min"],
+correct:2,
+explanation:"45 minuter."
+},
+
+{
+q:"En vara kostar 80 kr. Du köper 3 stycken. Vad betalar du?",
+options:["220 kr","230 kr","240 kr","250 kr"],
+correct:2,
+explanation:"80 gånger 3 = 240."
+},
+
+{
+q:"På ett prov fick 8 elever godkänt av 10. Hur stor andel klarade provet?",
+options:["60 procent","70 procent","80 procent","90 procent"],
+correct:2,
+explanation:"8 av 10 = 80 procent."
+},
+
+{
+q:"Kalle har 120 kr. Han köper något för 75 kr. Hur mycket har han kvar?",
+options:["35 kr","40 kr","45 kr","50 kr"],
+correct:2,
+explanation:"120 minus 75 = 45."
+},
+
+{
+q:"En tabell visar försäljning: Mån 10, Tis 14, Ons 12. Vilken dag såldes minst?",
+options:["Måndag","Tisdag","Onsdag","Lika många"],
+correct:0,
+explanation:"10 är lägst."
+},
+
+{
+q:"En cyklist kör 24 km på 2 timmar. Hur många km per timme?",
+options:["10","12","14","16"],
+correct:1,
+explanation:"24 delat med 2 = 12."
+}
+
+];
+
+let selectedAnswers = new Array(exercises.length).fill(null);
+
+function renderExercises(){
+const container = document.getElementById("exerciseContainer");
+container.innerHTML = "";
+
+exercises.forEach(function(ex,index){
+
+const wrapper = document.createElement("div");
+wrapper.className = "exercise";
+
+const title = document.createElement("h3");
+title.textContent = "Fråga " + (index + 1);
+wrapper.appendChild(title);
+
+const question = document.createElement("p");
+question.textContent = ex.q;
+wrapper.appendChild(question);
+
+const options = document.createElement("div");
+options.className = "options";
+
+ex.options.forEach(function(option,optIndex){
+
+const btn = document.createElement("button");
+btn.className = "option";
+
+if(selectedAnswers[index] === optIndex){
+btn.classList.add("selected");
+}
+
+btn.textContent = option;
+
+btn.onclick = function(){
+selectedAnswers[index] = optIndex;
+renderExercises();
+};
+
+options.appendChild(btn);
+
+});
+
+wrapper.appendChild(options);
+
+if(selectedAnswers[index] !== null){
+
+const feedback = document.createElement("div");
+const correct = selectedAnswers[index] === ex.correct;
+
+feedback.className = "feedback " + (correct ? "correct" : "wrong");
+
+feedback.innerHTML = correct
+? "<strong>Rätt.</strong> " + ex.explanation
+: "<strong>Inte riktigt.</strong> " + ex.explanation;
+
+wrapper.appendChild(feedback);
+}
+
+container.appendChild(wrapper);
+
+});
+}
+
+function showResult(){
+
+let correct = 0;
+
+exercises.forEach(function(ex,index){
+if(selectedAnswers[index] === ex.correct){
+correct++;
+}
+});
+
+document.getElementById("scoreText").textContent =
+correct + " av " + exercises.length + " rätt";
+
+let text = "";
+
+if(correct <= 5){
+text = "Bra start. Träna vidare på att läsa frågan lugnt och metodiskt.";
+}
+else if(correct <= 8){
+text = "Stabil grund. Nästa steg är mer HP-lika problem och tidspress.";
+}
+else{
+text = "Mycket starkt. Du är redo för nästa nivå.";
+}
+
+document.getElementById("resultText").textContent = text;
+document.getElementById("resultBox").classList.add("active");
+
+document.getElementById("resultBox").scrollIntoView({
+behavior:"smooth"
+});
+}
+
+function resetModule(){
+selectedAnswers = new Array(exercises.length).fill(null);
+document.getElementById("resultBox").classList.remove("active");
+renderExercises();
+}
+
+renderExercises();
+</script>
+
+</body>
+</html>
