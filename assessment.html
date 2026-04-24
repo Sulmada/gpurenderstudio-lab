@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartPrep Lab - Nivåanalys</title>
+<title>SmartPrep Lab - Nivåplacering</title>
+
 <style>
 :root{
   --bg:#0f172a;
   --panel:#111827;
-  --panel-2:#1e293b;
+  --card:#1e293b;
+  --soft:rgba(255,255,255,0.10);
   --text:#ffffff;
   --muted:rgba(255,255,255,0.78);
-  --soft:rgba(255,255,255,0.10);
   --blue:#2563eb;
   --blue-hover:#1d4ed8;
-  --green:#16a34a;
-  --yellow:#d97706;
-  --red:#dc2626;
 }
 
-*{ box-sizing:border-box; }
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -42,11 +42,16 @@ main{
   padding:28px 18px 60px;
 }
 
-.screen{ display:none; }
-.screen.active{ display:block; }
+.screen{
+  display:none;
+}
+
+.screen.active{
+  display:block;
+}
 
 .card{
-  background:var(--panel-2);
+  background:var(--card);
   border-radius:16px;
   padding:26px;
   box-shadow:0 10px 30px rgba(0,0,0,0.18);
@@ -63,7 +68,7 @@ main{
 }
 
 .hero p{
-  max-width:760px;
+  max-width:780px;
   margin:0 auto;
   color:var(--muted);
   font-size:18px;
@@ -87,11 +92,6 @@ main{
   font-size:14px;
 }
 
-.actions{
-  margin-top:30px;
-  text-align:center;
-}
-
 button{
   background:var(--blue);
   color:white;
@@ -100,7 +100,6 @@ button{
   padding:15px 24px;
   font-size:17px;
   cursor:pointer;
-  transition:background 0.2s ease;
 }
 
 button:hover{
@@ -115,6 +114,11 @@ button.secondary{
 
 button.secondary:hover{
   background:rgba(255,255,255,0.06);
+}
+
+.actions{
+  margin-top:30px;
+  text-align:center;
 }
 
 .topbar{
@@ -149,7 +153,6 @@ button.secondary:hover{
   height:100%;
   width:0%;
   background:var(--blue);
-  transition:width 0.25s ease;
 }
 
 .question-type{
@@ -208,7 +211,7 @@ button.secondary:hover{
   border:1px solid rgba(255,255,255,0.09);
   color:white;
   border-radius:12px;
-  padding:16px 16px;
+  padding:16px;
   font-size:16px;
   line-height:1.5;
 }
@@ -231,7 +234,7 @@ button.secondary:hover{
 
 .result-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
   gap:16px;
   margin-top:24px;
 }
@@ -271,7 +274,6 @@ button.secondary:hover{
 
 .recommendation h2{
   margin-top:0;
-  margin-bottom:12px;
 }
 
 .recommendation p{
@@ -287,20 +289,13 @@ button.secondary:hover{
   line-height:1.8;
 }
 
-.center{ text-align:center; }
 .small{
   font-size:14px;
   color:var(--muted);
 }
 
-.section-pill{
-  display:inline-block;
-  margin-left:8px;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:12px;
-  background:rgba(255,255,255,0.08);
-  color:#e5e7eb;
+.center{
+  text-align:center;
 }
 
 footer{
@@ -311,105 +306,117 @@ footer{
 }
 
 @media (max-width:640px){
-  .hero h1{ font-size:31px; }
-  .question-text{ font-size:21px; }
-  .nav-row{ flex-direction:column; }
-  .nav-row button{ width:100%; }
+  .hero h1{
+    font-size:31px;
+  }
+
+  .question-text{
+    font-size:21px;
+  }
+
+  .nav-row{
+    flex-direction:column;
+  }
+
+  .nav-row button{
+    width:100%;
+  }
 }
 </style>
 </head>
+
 <body>
 
 <header>SMARTPREP LAB</header>
 
 <main>
 
-  <section id="introScreen" class="screen active">
-    <div class="card hero">
-      <h1>Diagnostiskt test</h1>
-      <p>
-        Gör en första nivåanalys inför högskoleprovet. Testet innehåller både kvantitativa
-        och verbala uppgifter och ger en rekommendation om var du sannolikt kan vinna mest poäng.
-      </p>
+<section id="introScreen" class="screen active">
+  <div class="card hero">
+    <h1>Adaptiv nivåplacering</h1>
+    <p>
+      Det här testet börjar på grundnivå och ökar stegvis i svårighetsgrad.
+      Målet är inte bara att räkna rätt svar, utan att hitta rätt startnivå för träningen inför högskoleprovet.
+    </p>
 
-      <div class="meta">
-        <div class="badge">20 frågor</div>
-        <div class="badge">Kvantitativ + verbal</div>
-        <div class="badge">Direkt resultat</div>
-        <div class="badge">Ca 12 till 18 minuter</div>
+    <div class="meta">
+      <div class="badge">18 frågor</div>
+      <div class="badge">3 svårighetsnivåer</div>
+      <div class="badge">Kvantitativ och verbal</div>
+      <div class="badge">Rekommenderad startnivå</div>
+    </div>
+
+    <div class="actions">
+      <button onclick="startAssessment()">Starta nivåplacering</button>
+    </div>
+  </div>
+</section>
+
+<section id="questionScreen" class="screen">
+  <div class="topbar">
+    <div class="progress-wrap">
+      <div class="progress-label" id="progressLabel">Fråga 1 av 18</div>
+      <div class="progress">
+        <div id="progressBar" class="progress-bar"></div>
       </div>
+    </div>
+    <div class="small" id="questionCounter"></div>
+  </div>
+
+  <div class="card">
+    <div id="questionType" class="question-type"></div>
+    <div id="dataBox" class="data-box" style="display:none;"></div>
+    <div id="readingBox" class="reading-box" style="display:none;"></div>
+    <div id="questionText" class="question-text"></div>
+    <div id="optionsContainer" class="options"></div>
+
+    <div class="nav-row">
+      <button class="secondary" onclick="prevQuestion()">Föregående</button>
+      <button onclick="nextQuestion()">Nästa</button>
+    </div>
+  </div>
+</section>
+
+<section id="resultScreen" class="screen">
+  <div class="card">
+    <div class="center">
+      <h1>Din startprofil</h1>
+      <p class="small">
+        Resultatet visar var träningen sannolikt bör börja, inte en slutlig bedömning av din förmåga.
+      </p>
+    </div>
+
+    <div class="result-grid">
+      <div class="result-card">
+        <h3>Kvantitativ placering</h3>
+        <div id="quantLevel" class="score"></div>
+        <div id="quantNote" class="score-note"></div>
+      </div>
+
+      <div class="result-card">
+        <h3>Verbal placering</h3>
+        <div id="verbalLevel" class="score"></div>
+        <div id="verbalNote" class="score-note"></div>
+      </div>
+
+      <div class="result-card">
+        <h3>Rekommenderad väg</h3>
+        <div id="overallLevel" class="score"></div>
+        <div id="overallNote" class="score-note"></div>
+      </div>
+    </div>
+
+    <div class="recommendation">
+      <h2 id="trackTitle"></h2>
+      <p id="trackText"></p>
+      <div class="list" id="trackList"></div>
 
       <div class="actions">
-        <button onclick="startAssessment()">Starta nivåanalys</button>
+        <button onclick="restartAssessment()">Gör testet igen</button>
       </div>
     </div>
-  </section>
-
-  <section id="questionScreen" class="screen">
-    <div class="topbar">
-      <div class="progress-wrap">
-        <div class="progress-label" id="progressLabel">Fråga 1 av 20</div>
-        <div class="progress">
-          <div id="progressBar" class="progress-bar"></div>
-        </div>
-      </div>
-      <div class="small" id="questionCounter">Kvantitativ</div>
-    </div>
-
-    <div class="card">
-      <div id="questionType" class="question-type"></div>
-      <div id="dataBox" class="data-box" style="display:none;"></div>
-      <div id="readingBox" class="reading-box" style="display:none;"></div>
-      <div id="questionText" class="question-text"></div>
-      <div id="optionsContainer" class="options"></div>
-
-      <div class="nav-row">
-        <button class="secondary" onclick="prevQuestion()">Föregående</button>
-        <button onclick="nextQuestion()">Nästa</button>
-      </div>
-    </div>
-  </section>
-
-  <section id="resultScreen" class="screen">
-    <div class="card">
-      <div class="center">
-        <h1>Din profil</h1>
-        <p class="small">
-          Resultatet är en första uppskattning av nuläge och utvecklingspotential.
-        </p>
-      </div>
-
-      <div class="result-grid">
-        <div class="result-card">
-          <h3>Kvantitativ nivå</h3>
-          <div id="quantScoreLabel" class="score"></div>
-          <div id="quantScoreNote" class="score-note"></div>
-        </div>
-
-        <div class="result-card">
-          <h3>Verbal nivå</h3>
-          <div id="verbalScoreLabel" class="score"></div>
-          <div id="verbalScoreNote" class="score-note"></div>
-        </div>
-
-        <div class="result-card">
-          <h3>Total profil</h3>
-          <div id="overallLabel" class="score"></div>
-          <div id="overallNote" class="score-note"></div>
-        </div>
-      </div>
-
-      <div class="recommendation">
-        <h2 id="trackTitle"></h2>
-        <p id="trackText"></p>
-        <div class="list" id="trackList"></div>
-
-        <div class="actions">
-          <button onclick="restartAssessment()">Gör testet igen</button>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div>
+</section>
 
 </main>
 
@@ -418,196 +425,178 @@ footer{
 <script>
 const questions = [
   {
-    type: "Kvantitativ",
-    subtype: "Procentförändring",
-    text: "En vara kostar först 500 kr. Priset höjs med 20 procent och sänks därefter med 20 procent. Vad kostar varan efter båda förändringarna?",
-    options: ["480 kr", "500 kr", "520 kr", "540 kr"],
-    correct: 0,
-    category: "quant"
+    type:"Kvantitativ",
+    level:1,
+    subtype:"Procent",
+    text:"En jacka kostar 900 kr och sänks med 30 procent. Vad blir det nya priset?",
+    options:["570 kr","600 kr","630 kr","670 kr"],
+    correct:2,
+    category:"quant"
   },
   {
-    type: "Kvantitativ",
-    subtype: "Förhållanden",
-    text: "I en grupp är förhållandet mellan män och kvinnor 3:5. Gruppen består av totalt 64 personer. Hur många män finns i gruppen?",
-    options: ["20", "24", "28", "32"],
-    correct: 1,
-    category: "quant"
+    type:"Kvantitativ",
+    level:1,
+    subtype:"Bråk och decimal",
+    text:"Vilket av följande tal är störst?",
+    options:["0,62","3/5","0,59","5/8"],
+    correct:3,
+    category:"quant"
   },
   {
-    type: "Kvantitativ",
-    subtype: "Arbete och tid",
-    text: "Rör A fyller en tank på 6 timmar och rör B fyller samma tank på 3 timmar. Hur lång tid tar det att fylla tanken om båda rören används samtidigt?",
-    options: ["1 timme 30 minuter", "2 timmar", "2 timmar 15 minuter", "2 timmar 30 minuter"],
-    correct: 1,
-    category: "quant"
+    type:"Kvantitativ",
+    level:1,
+    subtype:"Algebra",
+    text:"Om 4x minus 7 är lika med 21, vilket värde har x?",
+    options:["5","6","7","8"],
+    correct:2,
+    category:"quant"
   },
   {
-    type: "Kvantitativ",
-    subtype: "Tabelltolkning",
-    data: `
+    type:"Kvantitativ",
+    level:2,
+    subtype:"Förhållanden",
+    text:"Förhållandet mellan två tal är 2 till 5. Summan av talen är 84. Vilket är det större talet?",
+    options:["48","54","60","64"],
+    correct:2,
+    category:"quant"
+  },
+  {
+    type:"Kvantitativ",
+    level:2,
+    subtype:"Medelvärde",
+    text:"Medelvärdet av fyra tal är 18. När ett femte tal läggs till blir medelvärdet 20. Vilket är det femte talet?",
+    options:["24","26","28","30"],
+    correct:2,
+    category:"quant"
+  },
+  {
+    type:"Kvantitativ",
+    level:2,
+    subtype:"Tabelltolkning",
+    data:`
       <table>
-        <tr><th>Vecka</th><th>Antal sålda biljetter</th></tr>
-        <tr><td>1</td><td>120</td></tr>
-        <tr><td>2</td><td>150</td></tr>
-        <tr><td>3</td><td>90</td></tr>
-        <tr><td>4</td><td>140</td></tr>
+        <tr><th>År</th><th>Antal deltagare</th></tr>
+        <tr><td>2020</td><td>240</td></tr>
+        <tr><td>2021</td><td>300</td></tr>
+        <tr><td>2022</td><td>270</td></tr>
+        <tr><td>2023</td><td>360</td></tr>
       </table>
     `,
-    text: "Hur många fler biljetter såldes vecka 2 och 4 tillsammans än vecka 1 och 3 tillsammans?",
-    options: ["60", "70", "80", "90"],
-    correct: 2,
-    category: "quant"
+    text:"Mellan vilka två år var den procentuella förändringen störst?",
+    options:["2020 till 2021","2021 till 2022","2022 till 2023","Ökningen var lika stor båda gångerna"],
+    correct:2,
+    category:"quant"
   },
   {
-    type: "Kvantitativ",
-    subtype: "Algebra",
-    text: "Om x/3 + 5 = 11, vilket värde har x?",
-    options: ["12", "15", "18", "21"],
-    correct: 2,
-    category: "quant"
+    type:"Kvantitativ",
+    level:3,
+    subtype:"Flerstegsproblem",
+    text:"En vara sänks först med 20 procent och höjs därefter med 25 procent. Vilket påstående stämmer om slutpriset jämfört med ursprungspriset?",
+    options:["Slutpriset är 5 procent lägre","Slutpriset är oförändrat","Slutpriset är 5 procent högre","Det går inte att avgöra utan ursprungspris"],
+    correct:1,
+    category:"quant"
   },
   {
-    type: "Kvantitativ",
-    subtype: "Medelvärde",
-    text: "Fem tal har medelvärdet 18. Fyra av talen är 12, 16, 20 och 24. Vilket är det femte talet?",
-    options: ["14", "16", "18", "18,5"],
-    correct: 2,
-    category: "quant"
+    type:"Kvantitativ",
+    level:3,
+    subtype:"Arbete och tid",
+    text:"Anna kan måla ett staket på 6 timmar. Bo kan måla samma staket på 4 timmar. De börjar tillsammans, men efter 2 timmar slutar Bo. Hur lång tid tar hela arbetet?",
+    options:["3 timmar","3 timmar 20 minuter","4 timmar","4 timmar 30 minuter"],
+    correct:2,
+    category:"quant"
   },
   {
-    type: "Kvantitativ",
-    subtype: "Geometri",
-    text: "En rektangel har längden 12 cm och bredden 5 cm. Om längden ökar med 25 procent medan bredden är oförändrad, hur stor blir den nya arean?",
-    options: ["65 cm²", "70 cm²", "75 cm²", "80 cm²"],
-    correct: 2,
-    category: "quant"
+    type:"Kvantitativ",
+    level:3,
+    subtype:"Logiskt resonemang",
+    text:"Tre tal har medelvärdet 16. Medianen är 15 och det största talet är dubbelt så stort som det minsta. Vilket är det största talet?",
+    options:["20","21","24","27"],
+    correct:2,
+    category:"quant"
   },
   {
-    type: "Kvantitativ",
-    subtype: "Sannolikhet",
-    text: "I en påse finns 4 röda, 3 blå och 3 gröna kulor. En kula dras slumpmässigt. Hur stor är sannolikheten att kulan är blå eller grön?",
-    options: ["3/10", "1/2", "3/5", "7/10"],
-    correct: 2,
-    category: "quant"
+    type:"Verbal",
+    level:1,
+    subtype:"Ord",
+    text:"Vilket ord betyder ungefär samma sak som tydlig?",
+    options:["klar","slumpmässig","försenad","avlägsen"],
+    correct:0,
+    category:"verbal"
   },
   {
-    type: "Kvantitativ",
-    subtype: "Talmönster",
-    text: "Vilket tal ska stå i stället för frågetecknet? 3, 7, 15, 31, ?",
-    options: ["47", "55", "63", "71"],
-    correct: 2,
-    category: "quant"
+    type:"Verbal",
+    level:1,
+    subtype:"Ord",
+    text:"Vilket ord betyder ungefär samma sak som tveksam?",
+    options:["säker","osäker","snabb","noggrann"],
+    correct:1,
+    category:"verbal"
   },
   {
-    type: "Kvantitativ",
-    subtype: "Textproblem",
-    text: "En bok reas ut för 180 kr efter att priset sänkts med 25 procent. Vad var ordinarie pris?",
-    options: ["225 kr", "235 kr", "240 kr", "250 kr"],
-    correct: 2,
-    category: "quant"
+    type:"Verbal",
+    level:1,
+    subtype:"Kort läsförståelse",
+    reading:"Flera deltagare uppgav att de lärde sig mer när övningarna var korta men återkommande. Det tyder på att regelbundenhet kan vara viktigare än långa enstaka pass.",
+    text:"Vilken slutsats stöds bäst av texten?",
+    options:["Långa pass är alltid ineffektiva","Regelbundna övningar kan vara värdefulla","Deltagarna lärde sig inget av korta pass","Övningar bör undvikas om de är korta"],
+    correct:1,
+    category:"verbal"
   },
   {
-    type: "Kvantitativ",
-    subtype: "Hastighet",
-    text: "En bil kör 120 km på 1 timme och 30 minuter. Vilken är bilens medelhastighet?",
-    options: ["70 km/h", "75 km/h", "80 km/h", "90 km/h"],
-    correct: 2,
-    category: "quant"
+    type:"Verbal",
+    level:2,
+    subtype:"Meningskomplettering",
+    text:"Trots att rapporten var kortfattad var den tillräckligt ______ för att beslutet skulle kunna fattas.",
+    options:["utförlig","motsägelsefull","obetydlig","avsiktlig"],
+    correct:0,
+    category:"verbal"
   },
   {
-    type: "Kvantitativ",
-    subtype: "Logik och villkor",
-    text: "Alla studenter på kursen har gjort uppgift A. Några av dem har också gjort uppgift B. Vilket påstående måste vara sant?",
-    options: [
-      "Ingen student har gjort både A och B.",
-      "Alla som gjort B har också gjort A.",
-      "Alla som gjort A har också gjort B.",
-      "Det finns studenter som inte gjort A men gjort B."
-    ],
-    correct: 1,
-    category: "quant"
-  },
-
-  {
-    type: "Verbal",
-    subtype: "Ord",
-    text: "Vilket ord betyder ungefär samma sak som tillfällig?",
-    options: ["varaktig", "temporär", "omfattande", "sällsynt"],
-    correct: 1,
-    category: "verbal"
+    type:"Verbal",
+    level:2,
+    subtype:"Nyans",
+    text:"Vilket ord avviker mest i betydelse från de övriga?",
+    options:["temporär","provisorisk","kortvarig","bestående"],
+    correct:3,
+    category:"verbal"
   },
   {
-    type: "Verbal",
-    subtype: "Ord",
-    text: "Vilket ord betyder ungefär samma sak som motvillig?",
-    options: ["obenägen", "upprymd", "ivrigt", "bestämd"],
-    correct: 0,
-    category: "verbal"
+    type:"Verbal",
+    level:2,
+    subtype:"Läsförståelse",
+    reading:"När kommunen införde längre öppettider ökade antalet besökare på kvällarna, men morgonbesöken förändrades inte. Förändringen tycks alltså främst ha påverkat grupper som tidigare haft svårt att besöka verksamheten efter arbetstid.",
+    text:"Vad framgår av texten?",
+    options:["Morgonbesöken ökade mest","Kvällsöppet påverkade vissa grupper mer än andra","Besöken minskade totalt sett","Kommunen kortade sina öppettider"],
+    correct:1,
+    category:"verbal"
   },
   {
-    type: "Verbal",
-    subtype: "Meningskomplettering",
-    text: "Trots att resultaten var osäkra ansåg forskarna att underlaget var tillräckligt ______ för att studien skulle publiceras.",
-    options: ["bräckligt", "överflödigt", "robust", "tillfälligt"],
-    correct: 2,
-    category: "verbal"
+    type:"Verbal",
+    level:3,
+    subtype:"Ord",
+    text:"Vilket ord betyder närmast oförbehållsam?",
+    options:["reserverad","villkorlig","öppenhjärtig","motvillig"],
+    correct:2,
+    category:"verbal"
   },
   {
-    type: "Verbal",
-    subtype: "Meningskomplettering",
-    text: "När kritiken växte försökte företaget först ______ frågan, men tvingades senare bemöta den öppet.",
-    options: ["bagatellisera", "fördjupa", "precisera", "förankra"],
-    correct: 0,
-    category: "verbal"
+    type:"Verbal",
+    level:3,
+    subtype:"Inferens",
+    reading:"Forskaren betonade att resultaten inte bör tolkas som ett slutgiltigt svar. Däremot menade hon att de ger skäl att ompröva några av de antaganden som tidigare tagits för givna.",
+    text:"Vilken tolkning ligger närmast textens innebörd?",
+    options:["Resultaten avfärdar all tidigare forskning","Resultaten är osäkra men kan påverka tidigare antaganden","Forskaren anser att frågan nu är helt avgjord","Tidigare antaganden bekräftas utan invändningar"],
+    correct:1,
+    category:"verbal"
   },
   {
-    type: "Verbal",
-    subtype: "Läsförståelse",
-    reading: "Många förknippar effektivitet med högt tempo. Men i arbete som kräver eftertanke kan ett alltför uppskruvat tempo snarare leda till fler fel, fler omtag och sämre beslut. I sådana situationer är det därför inte säkert att den som arbetar snabbast också arbetar bäst.",
-    text: "Vilken slutsats stöds bäst av texten?",
-    options: [
-      "Snabbt arbete är nästan alltid ineffektivt.",
-      "Arbete som kräver eftertanke kan försämras av för högt tempo.",
-      "Högt tempo leder alltid till fler fel.",
-      "Den som arbetar långsamt fattar oftast bättre beslut."
-    ],
-    correct: 1,
-    category: "verbal"
-  },
-  {
-    type: "Verbal",
-    subtype: "Läsförståelse",
-    reading: "När biblioteket förlängde sina öppettider ökade antalet besökare tydligt under kvällarna, men inte under morgontimmarna. Det tyder på att tillgänglighet spelar roll, men också att olika tider på dygnet passar olika grupper olika väl.",
-    text: "Vad framgår av texten?",
-    options: [
-      "Förlängda öppettider ökade besöken jämnt över hela dagen.",
-      "Morgontider är generellt bättre än kvällstider.",
-      "Olika grupper tycks ha olika nytta av olika öppettider.",
-      "Biblioteket hade tidigare för långa öppettider."
-    ],
-    correct: 2,
-    category: "verbal"
-  },
-  {
-    type: "Verbal",
-    subtype: "Nyans",
-    text: "Vilket ord avviker mest i betydelse från de övriga?",
-    options: ["provisorisk", "temporär", "kortvarig", "bestående"],
-    correct: 3,
-    category: "verbal"
-  },
-  {
-    type: "Verbal",
-    subtype: "Språkligt resonemang",
-    text: "Vilket påstående uttrycker störst grad av försiktighet?",
-    options: [
-      "Detta visar att metoden fungerar.",
-      "Detta tyder på att metoden kan fungera.",
-      "Detta bevisar att metoden fungerar bäst.",
-      "Detta innebär att metoden fungerar i alla fall."
-    ],
-    correct: 1,
-    category: "verbal"
+    type:"Verbal",
+    level:3,
+    subtype:"Språklig precision",
+    text:"Vilket påstående uttrycker störst försiktighet?",
+    options:["Detta visar att metoden fungerar","Detta bevisar att metoden är bäst","Detta kan tyda på att metoden fungerar","Detta innebär att metoden alltid fungerar"],
+    correct:2,
+    category:"verbal"
   }
 ];
 
@@ -626,13 +615,13 @@ function startAssessment(){
 function renderQuestion(){
   const q = questions[currentQuestion];
 
-  document.getElementById("progressLabel").textContent = `Fråga ${currentQuestion + 1} av ${questions.length}`;
-  document.getElementById("questionCounter").innerHTML = `${q.type}<span class="section-pill">${currentQuestion < 12 ? "Del 1 av 2" : "Del 2 av 2"}</span>`;
-  document.getElementById("questionType").textContent = `${q.type} - ${q.subtype}`;
+  document.getElementById("progressLabel").textContent = "Fråga " + (currentQuestion + 1) + " av " + questions.length;
+  document.getElementById("questionCounter").textContent = q.type + " nivå " + q.level;
+  document.getElementById("questionType").textContent = q.type + " - " + q.subtype + " - nivå " + q.level;
   document.getElementById("questionText").textContent = q.text;
 
   const progressPercent = ((currentQuestion + 1) / questions.length) * 100;
-  document.getElementById("progressBar").style.width = `${progressPercent}%`;
+  document.getElementById("progressBar").style.width = progressPercent + "%";
 
   const readingBox = document.getElementById("readingBox");
   if(q.reading){
@@ -655,14 +644,14 @@ function renderQuestion(){
   const optionsContainer = document.getElementById("optionsContainer");
   optionsContainer.innerHTML = "";
 
-  q.options.forEach((option, index) => {
+  q.options.forEach(function(option,index){
     const btn = document.createElement("button");
     btn.className = "option";
     if(answers[currentQuestion] === index){
       btn.classList.add("selected");
     }
     btn.textContent = option;
-    btn.onclick = () => {
+    btn.onclick = function(){
       answers[currentQuestion] = index;
       renderQuestion();
     };
@@ -691,129 +680,122 @@ function nextQuestion(){
   }
 }
 
-function labelQuant(score){
-  if(score <= 4){
-    return {
-      label: "Grund",
-      note: "Du har sannolikt störst poängpotential i att stärka metoder, säkerhet och flerstegslösning i kvantitativa frågor."
-    };
-  } else if(score <= 8){
-    return {
-      label: "Stabil",
-      note: "Du har en fungerande grund och kan sannolikt höja resultatet genom mer provnära träning, tempo och precision."
-    };
-  } else {
-    return {
-      label: "Stark",
-      note: "Du visar god kvantitativ nivå och kan främst arbeta vidare med tempo, svårare resonemang och träffsäkerhet under press."
-    };
+function getLevel(category){
+  const result = {
+    level1:0,
+    level2:0,
+    level3:0,
+    total:0
+  };
+
+  questions.forEach(function(q,i){
+    if(q.category === category && answers[i] === q.correct){
+      result.total++;
+      if(q.level === 1){ result.level1++; }
+      if(q.level === 2){ result.level2++; }
+      if(q.level === 3){ result.level3++; }
+    }
+  });
+
+  let placement = 1;
+
+  if(result.level1 >= 2 && result.level2 >= 2){
+    placement = 2;
   }
+
+  if(result.level1 >= 2 && result.level2 >= 2 && result.level3 >= 2){
+    placement = 3;
+  }
+
+  return {
+    placement:placement,
+    detail:result
+  };
 }
 
-function labelVerbal(score){
-  if(score <= 3){
-    return {
-      label: "Grund",
-      note: "Du kan sannolikt vinna på att bygga ordkunskap, nyansförståelse och säkerhet i läsning under tidspress."
-    };
-  } else if(score <= 6){
-    return {
-      label: "Stabil",
-      note: "Du visar en god verbal bas och har sannolikt nytta av mer provnära frågor och arbete med precision."
-    };
+function levelText(area, placement, detail){
+  if(placement === 1){
+    return area + " nivå 1";
+  }
+  if(placement === 2){
+    return area + " nivå 2";
+  }
+  return area + " nivå 3";
+}
+
+function levelNote(area, placement, detail){
+  if(area === "Kvant"){
+    if(placement === 1){
+      return "Rekommenderad start är grundnivå: procent, bråk, algebra, textproblem och säkra metoder utan tidspress. Resultat: " + detail.total + " av 9 rätt.";
+    }
+    if(placement === 2){
+      return "Rekommenderad start är standardnivå: provnära kvantitativa uppgifter med fokus på metodval, precision och tempo. Resultat: " + detail.total + " av 9 rätt.";
+    }
+    return "Rekommenderad start är avancerad nivå: svårare kvantitativa frågor, tidspress och strategisk prioritering. Resultat: " + detail.total + " av 9 rätt.";
   } else {
-    return {
-      label: "Stark",
-      note: "Du visar mycket god verbal startnivå och kan främst fokusera på uthållighet, tempo och de mer subtila språkliga fällorna."
-    };
+    if(placement === 1){
+      return "Rekommenderad start är grundnivå: ordkunskap, lässtrategi och tydlig texttolkning. Resultat: " + detail.total + " av 9 rätt.";
+    }
+    if(placement === 2){
+      return "Rekommenderad start är standardnivå: meningskomplettering, nyanser och mer provnära läsförståelse. Resultat: " + detail.total + " av 9 rätt.";
+    }
+    return "Rekommenderad start är avancerad nivå: svårare ord, subtil inferens och språklig precision under tidspress. Resultat: " + detail.total + " av 9 rätt.";
   }
 }
 
 function showResults(){
-  let quantCorrect = 0;
-  let verbalCorrect = 0;
+  const quant = getLevel("quant");
+  const verbal = getLevel("verbal");
 
-  questions.forEach((q, i) => {
-    if(answers[i] === q.correct){
-      if(q.category === "quant"){
-        quantCorrect++;
-      } else {
-        verbalCorrect++;
-      }
-    }
-  });
+  document.getElementById("quantLevel").textContent = "Nivå " + quant.placement;
+  document.getElementById("quantNote").textContent = levelNote("Kvant", quant.placement, quant.detail);
 
-  const totalCorrect = quantCorrect + verbalCorrect;
-  const quant = labelQuant(quantCorrect);
-  const verbal = labelVerbal(verbalCorrect);
+  document.getElementById("verbalLevel").textContent = "Nivå " + verbal.placement;
+  document.getElementById("verbalNote").textContent = levelNote("Verbal", verbal.placement, verbal.detail);
 
-  document.getElementById("quantScoreLabel").textContent = quant.label;
-  document.getElementById("quantScoreNote").textContent = `${quant.note} (${quantCorrect} av 12 rätt)`;
-
-  document.getElementById("verbalScoreLabel").textContent = verbal.label;
-  document.getElementById("verbalScoreNote").textContent = `${verbal.note} (${verbalCorrect} av 8 rätt)`;
-
-  let overallLabel = "";
+  let overall = "";
   let overallNote = "";
   let trackTitle = "";
   let trackText = "";
-  let trackListHtml = "";
+  let trackList = "";
 
-  if(quantCorrect <= 4 && verbalCorrect >= 5){
-    overallLabel = "Obalanserad styrkeprofil";
-    overallNote = "Du verkar ha tydligare verbal än kvantitativ styrka just nu. Den största poängökningen finns sannolikt i kvantitativ träning.";
-    trackTitle = "Rekommenderad start: Kvantitativt grundspår";
-    trackText = "Det här spåret passar användare som redan har användbar verbal nivå men behöver bygga upp säkerhet inom procent, algebra, tabeller, textproblem och flerstegstänk.";
-    trackListHtml = `
-      <strong>Fokus i nästa steg:</strong><br><br>
-      1. Procent, förhållanden och bråk<br>
-      2. Textproblem steg för steg<br>
-      3. Algebra och huvudräkning<br>
-      4. Metod före tidspress
-    `;
-  } else if(totalCorrect <= 9){
-    overallLabel = "Foundation";
-    overallNote = "Du har sannolikt mest att vinna på att bygga en bredare grund innan full provträning.";
+  if(quant.placement === 1 && verbal.placement >= 2){
+    overall = "Kvantfokus";
+    overallNote = "Den största poängpotentialen verkar finnas i den kvantitativa delen.";
+    trackTitle = "Rekommenderad start: Kvantitativ grundträning";
+    trackText = "Du bör börja med kvantitativ nivå 1 och samtidigt underhålla verbal nivå " + verbal.placement + ".";
+    trackList = "1. Procent och bråk<br>2. Algebra och textproblem<br>3. Tabeller och förhållanden<br>4. Korta pass med tydlig metod";
+  } else if(verbal.placement === 1 && quant.placement >= 2){
+    overall = "Verbalfokus";
+    overallNote = "Den största poängpotentialen verkar finnas i den verbala delen.";
+    trackTitle = "Rekommenderad start: Verbal grundträning";
+    trackText = "Du bör börja med verbal nivå 1 och samtidigt underhålla kvantitativ nivå " + quant.placement + ".";
+    trackList = "1. Ordkunskap<br>2. Meningskomplettering<br>3. Lässtrategi<br>4. Precision i svarsalternativ";
+  } else if(quant.placement === 1 && verbal.placement === 1){
+    overall = "Foundation";
+    overallNote = "Bäst start är ett brett grundspår med lugn progression.";
     trackTitle = "Rekommenderad start: Grundspåret";
-    trackText = "Det här spåret passar användare som vill täppa till kunskapsluckor och bygga upp trygghet innan de går över till mer provlika pass.";
-    trackListHtml = `
-      <strong>Fokus i nästa steg:</strong><br><br>
-      1. Grundläggande kvantitativa metoder<br>
-      2. Ordkunskap och lässtrategi<br>
-      3. Kortare övningspass med tydlig feedback<br>
-      4. Säkerhet före tempo
-    `;
-  } else if(totalCorrect <= 15){
-    overallLabel = "Standard";
-    overallNote = "Du har en bra bas att bygga vidare på. Nästa steg är mer provnära träning och bättre precision under tidspress.";
-    trackTitle = "Rekommenderad start: Standardspåret";
-    trackText = "Det här spåret passar användare som redan har en fungerande grund men behöver fler provlika uppgifter, bättre fart och säkrare metodval.";
-    trackListHtml = `
-      <strong>Fokus i nästa steg:</strong><br><br>
-      1. Provlika kvantitativa och verbala pass<br>
-      2. Vanliga fällor i svarsalternativ<br>
-      3. Tidsstyrda mini-pass<br>
-      4. Analys av feltyper
-    `;
-  } else {
-    overallLabel = "Avancerad";
-    overallNote = "Du visar en stark startnivå. Det största lyftet framåt ligger sannolikt i tempo, precision och uthållighet över hela provpass.";
+    trackText = "Du bör börja på nivå 1 i både kvantitativ och verbal träning.";
+    trackList = "1. Grundläggande räknesätt och procent<br>2. Enkla textproblem<br>3. Ordkunskap och kort läsförståelse<br>4. Stabilitet före tidspress";
+  } else if(quant.placement === 3 && verbal.placement === 3){
+    overall = "Avancerad";
+    overallNote = "Du kan börja högt och främst arbeta med svårare frågor, tempo och uthållighet.";
     trackTitle = "Rekommenderad start: Avancerat spår";
-    trackText = "Det här spåret passar användare som redan ligger högt och främst vill skärpa träffsäkerheten i svårare frågor under begränsad tid.";
-    trackListHtml = `
-      <strong>Fokus i nästa steg:</strong><br><br>
-      1. Svårare provlika uppgifter<br>
-      2. Tempo utan kvalitetstapp<br>
-      3. Precision i ord och inferensfrågor<br>
-      4. Strategi för urval och prioritering
-    `;
+    trackText = "Du bör börja på nivå 3 i båda delarna.";
+    trackList = "1. Svårare provlika frågor<br>2. Tidspress<br>3. Felanalys<br>4. Strategi över hela provpass";
+  } else {
+    overall = "Standard";
+    overallNote = "Du har en fungerande bas men bör träna riktat efter delområde.";
+    trackTitle = "Rekommenderad start: Standardspåret";
+    trackText = "Du bör börja på kvantitativ nivå " + quant.placement + " och verbal nivå " + verbal.placement + ".";
+    trackList = "1. Riktade övningspass<br>2. Provlika frågor<br>3. Tempo stegvis<br>4. Analys av feltyper";
   }
 
-  document.getElementById("overallLabel").textContent = overallLabel;
-  document.getElementById("overallNote").textContent = `${overallNote} (${totalCorrect} av 20 rätt)`;
+  document.getElementById("overallLevel").textContent = overall;
+  document.getElementById("overallNote").textContent = overallNote;
   document.getElementById("trackTitle").textContent = trackTitle;
   document.getElementById("trackText").textContent = trackText;
-  document.getElementById("trackList").innerHTML = trackListHtml;
+  document.getElementById("trackList").innerHTML = "<strong>Fokus i nästa steg:</strong><br><br>" + trackList;
 
   document.getElementById("questionScreen").classList.remove("active");
   document.getElementById("resultScreen").classList.add("active");
