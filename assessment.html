@@ -412,7 +412,8 @@ footer{
       <div class="list" id="trackList"></div>
 
       <div class="actions">
-        <button onclick="restartAssessment()">Gör testet igen</button>
+      <button onclick="goNextModule()">Starta din första modul</button>
+      <button class="secondary" onclick="restartAssessment()">Gör testet igen</button>
       </div>
     </div>
   </div>
@@ -806,6 +807,9 @@ function restartAssessment(){
   currentQuestion = 0;
   document.getElementById("resultScreen").classList.remove("active");
   document.getElementById("introScreen").classList.add("active");
+}
+  function goNextModule(){
+  window.location.href = "foundation.html";
 }
 </script>
 
