@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartPrep Lab - Standard</title>
+
+<style>
+:root{
+  --bg:#0f172a;
+  --panel:#111827;
+  --card:#1e293b;
+  --soft:rgba(255,255,255,0.10);
+  --text:#ffffff;
+  --muted:rgba(255,255,255,0.78);
+  --blue:#2563eb;
+  --blue-hover:#1d4ed8;
+  --green:#16a34a;
+  --red:#dc2626;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header{
+  padding:20px;
+  background:var(--panel);
+  text-align:center;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+main{
+  max-width:980px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:26px;
+  margin-bottom:22px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.18);
+}
+
+.hero{
+  text-align:center;
+}
+
+.hero h1{
+  font-size:40px;
+  margin:0 0 14px 0;
+}
+
+.hero p{
+  max-width:780px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.6;
+}
+
+.badges{
+  margin-top:24px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+}
+
+.badge{
+  background:rgba(37,99,235,0.16);
+  border:1px solid rgba(37,99,235,0.35);
+  color:#dbeafe;
+  padding:10px 14px;
+  border-radius:999px;
+  font-size:14px;
+}
+
+h2{
+  margin-top:0;
+}
+
+p, li{
+  line-height:1.7;
+}
+
+.muted{
+  color:var(--muted);
+}
+
+.lesson-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:16px;
+  margin-top:18px;
+}
+
+.lesson-box{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:18px;
+}
+
+.lesson-box h3{
+  margin-top:0;
+}
+
+.method{
+  background:rgba(37,99,235,0.14);
+  border:1px solid rgba(37,99,235,0.35);
+  border-radius:14px;
+  padding:18px;
+  margin-top:16px;
+}
+
+button{
+  background:var(--blue);
+  color:white;
+  border:none;
+  border-radius:12px;
+  padding:14px 22px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:var(--blue-hover);
+}
+
+button.secondary{
+  background:transparent;
+  border:1px solid var(--soft);
+  color:white;
+}
+
+button.secondary:hover{
+  background:rgba(255,255,255,0.06);
+}
+
+.actions{
+  margin-top:24px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+}
+
+.exercise{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:16px;
+}
+
+.exercise h3{
+  margin-top:0;
+  font-size:18px;
+}
+
+.options{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
+
+.option{
+  width:100%;
+  text-align:left;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.09);
+  color:white;
+  border-radius:12px;
+  padding:14px;
+  font-size:16px;
+  line-height:1.5;
+}
+
+.option.selected{
+  border-color:rgba(37,99,235,0.8);
+  background:rgba(37,99,235,0.2);
+}
+
+.feedback{
+  display:none;
+  margin-top:12px;
+  padding:14px;
+  border-radius:12px;
+  line-height:1.6;
+}
+
+.feedback.correct{
+  display:block;
+  background:rgba(22,163,74,0.16);
+  border:1px solid rgba(22,163,74,0.35);
+}
+
+.feedback.wrong{
+  display:block;
+  background:rgba(220,38,38,0.14);
+  border:1px solid rgba(220,38,38,0.35);
+}
+
+.result{
+  display:none;
+  background:rgba(37,99,235,0.14);
+  border:1px solid rgba(37,99,235,0.35);
+  border-radius:16px;
+  padding:22px;
+  margin-top:22px;
+}
+
+.result.active{
+  display:block;
+}
+
+.score{
+  font-size:32px;
+  font-weight:bold;
+  margin:8px 0;
+}
+
+footer{
+  text-align:center;
+  padding:30px 16px 40px;
+  color:rgba(255,255,255,0.55);
+  font-size:14px;
+}
+
+@media (max-width:640px){
+  .hero h1{
+    font-size:31px;
+  }
+
+  .actions{
+    flex-direction:column;
+  }
+
+  .actions button{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>SMARTPREP LAB</header>
+
+<main>
+
+<section class="card hero">
+  <h1>Standardspår 1</h1>
+  <p>
+    För dig med fungerande grund. Här tränar du mer provnära frågor där metodval,
+    tempo och precision blir viktigare.
+  </p>
+
+  <div class="badges">
+    <div class="badge">Standard</div>
+    <div class="badge">10 övningar</div>
+    <div class="badge">HP-lik nivå</div>
+    <div class="badge">Tidseffektiv metod</div>
+  </div>
+
+  <div class="actions">
+    <button onclick="document.getElementById('training').scrollIntoView({behavior:'smooth'})">Starta övningarna</button>
+    <button class="secondary" onclick="window.location.href='assessment.html'">Till nivåtest</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Vad tränar du här?</h2>
+
+  <div class="lesson-grid">
+
+    <div class="lesson-box">
+      <h3>Metod före uträkning</h3>
+      <p class="muted">
+        Många frågor löses snabbare med resonemang än med full uträkning.
+      </p>
+    </div>
+
+    <div class="lesson-box">
+      <h3>Vanliga fällor</h3>
+      <p class="muted">
+        Svarsalternativ är ofta byggda för vanliga misstag.
+      </p>
+    </div>
+
+    <div class="lesson-box">
+      <h3>Tempo</h3>
+      <p class="muted">
+        Lär dig när du ska räkna exakt och när du ska uppskatta.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="method">
+    <h3>Standardmetod</h3>
+    <p>
+      Läs frågan. Identifiera vad som faktiskt efterfrågas. Testa sedan snabbaste möjliga väg:
+      uppskattning, uteslutning, jämförelse eller enkel algebra.
+    </p>
+  </div>
+</section>
+
+<section id="training" class="card">
+  <h2>Övningar</h2>
+  <p class="muted">
+    Lite närmare högskoleprovet i känsla och nivå.
+  </p>
+
+  <div id="exerciseContainer"></div>
+
+  <div class="actions">
+    <button onclick="showResult()">Visa resultat</button>
+    <button class="secondary" onclick="resetModule()">Börja om</button>
+  </div>
+
+  <div id="resultBox" class="result">
+    <h2>Ditt resultat</h2>
+    <div id="scoreText" class="score"></div>
+    <p id="resultText"></p>
+  </div>
+</section>
+
+</main>
+
+<footer>Beta-version av SmartPrep Lab</footer>
+
+<script>
+const exercises = [
+
+{
+q:"En vara höjs med 20 procent från 500 kr. Vad kostar den efter höjningen?",
+options:["580 kr","590 kr","600 kr","620 kr"],
+correct:2,
+explanation:"20 procent av 500 är 100. Nytt pris = 600 kr."
+},
+
+{
+q:"Förhållandet mellan män och kvinnor är 3:5. Totalt finns 64 personer. Hur många män finns det?",
+options:["20","24","28","32"],
+correct:1,
+explanation:"Totalt 8 delar. 64 delat med 8 = 8. Män = 3 delar = 24."
+},
+
+{
+q:"Ett tåg kör 180 km på 2 timmar och 15 minuter. Medelhastighet?",
+options:["70 km/h","80 km/h","90 km/h","100 km/h"],
+correct:1,
+explanation:"2,25 timmar. 180 / 2,25 = 80."
+},
+
+{
+q:"Vilket tal är störst?",
+options:["0,72","7/10","3/4","71 procent"],
+correct:2,
+explanation:"3/4 = 0,75 vilket är störst."
+},
+
+{
+q:"En tank fylls av rör A på 6 timmar och rör B på 3 timmar. Hur lång tid tillsammans?",
+options:["1 timme","2 timmar","2,5 timmar","3 timmar"],
+correct:1,
+explanation:"1/6 + 1/3 = 1/2 tank per timme. Tar 2 timmar."
+},
+
+{
+q:"En bok kostar 240 kr efter 20 procents rabatt. Vad kostade den före rabatt?",
+options:["280 kr","290 kr","300 kr","320 kr"],
+correct:2,
+explanation:"240 är 80 procent. 100 procent = 300."
+},
+
+{
+q:"Medelvärdet av 10, 14, 18 och x är 15. Vad är x?",
+options:["16","18","20","22"],
+correct:1,
+explanation:"Summan ska vara 60. Tre första ger 42. x = 18."
+},
+
+{
+q:"Vilket alternativ ligger närmast 19 procent av 420?",
+options:["60","70","80","90"],
+correct:2,
+explanation:"20 procent är 84. 19 procent är nära 80."
+},
+
+{
+q:"En rektangel har längd 8 och bredd 5. Om längden ökar med 25 procent, ny area?",
+options:["40","45","50","55"],
+correct:2,
+explanation:"Ny längd = 10. Area = 10 x 5 = 50."
+},
+
+{
+q:"Pris höjs från 100 till 120 och sänks sedan med 20 procent. Slutpris?",
+options:["96","100","104","108"],
+correct:0,
+explanation:"120 minus 20 procent av 120 = 96."
+}
+
+];
+
+let selectedAnswers = new Array(exercises.length).fill(null);
+
+function renderExercises(){
+const container = document.getElementById("exerciseContainer");
+container.innerHTML = "";
+
+exercises.forEach(function(ex,index){
+
+const wrapper = document.createElement("div");
+wrapper.className = "exercise";
+
+const title = document.createElement("h3");
+title.textContent = "Fråga " + (index + 1);
+wrapper.appendChild(title);
+
+const question = document.createElement("p");
+question.textContent = ex.q;
+wrapper.appendChild(question);
+
+const options = document.createElement("div");
+options.className = "options";
+
+ex.options.forEach(function(option,optIndex){
+
+const btn = document.createElement("button");
+btn.className = "option";
+
+if(selectedAnswers[index] === optIndex){
+btn.classList.add("selected");
+}
+
+btn.textContent = option;
+
+btn.onclick = function(){
+selectedAnswers[index] = optIndex;
+renderExercises();
+};
+
+options.appendChild(btn);
+
+});
+
+wrapper.appendChild(options);
+
+if(selectedAnswers[index] !== null){
+
+const feedback = document.createElement("div");
+const correct = selectedAnswers[index] === ex.correct;
+
+feedback.className = "feedback " + (correct ? "correct" : "wrong");
+
+feedback.innerHTML = correct
+? "<strong>Rätt.</strong> " + ex.explanation
+: "<strong>Inte riktigt.</strong> " + ex.explanation;
+
+wrapper.appendChild(feedback);
+}
+
+container.appendChild(wrapper);
+
+});
+}
+
+function showResult(){
+
+let correct = 0;
+
+exercises.forEach(function(ex,index){
+if(selectedAnswers[index] === ex.correct){
+correct++;
+}
+});
+
+document.getElementById("scoreText").textContent =
+correct + " av " + exercises.length + " rätt";
+
+let text = "";
+
+if(correct <= 5){
+text = "Bra start. Arbeta vidare med metodval och säkerhet.";
+}
+else if(correct <= 8){
+text = "Stabil nivå. Nästa steg är mer tidspress och svårare blandpass.";
+}
+else{
+text = "Mycket starkt. Du är redo för avancerat spår.";
+}
+
+document.getElementById("resultText").textContent = text;
+document.getElementById("resultBox").classList.add("active");
+
+document.getElementById("resultBox").scrollIntoView({
+behavior:"smooth"
+});
+}
+
+function resetModule(){
+selectedAnswers = new Array(exercises.length).fill(null);
+document.getElementById("resultBox").classList.remove("active");
+renderExercises();
+}
+
+renderExercises();
+</script>
+
+</body>
+</html>
