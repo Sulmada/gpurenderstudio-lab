@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartPrep Lab - Foundation 1</title>
+
+<style>
+:root{
+  --bg:#0f172a;
+  --panel:#111827;
+  --card:#1e293b;
+  --soft:rgba(255,255,255,0.10);
+  --text:#ffffff;
+  --muted:rgba(255,255,255,0.78);
+  --blue:#2563eb;
+  --blue-hover:#1d4ed8;
+  --green:#16a34a;
+  --red:#dc2626;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header{
+  padding:20px;
+  background:var(--panel);
+  text-align:center;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+main{
+  max-width:980px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:26px;
+  margin-bottom:22px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.18);
+}
+
+.hero{
+  text-align:center;
+}
+
+.hero h1{
+  font-size:40px;
+  margin:0 0 14px 0;
+}
+
+.hero p{
+  max-width:780px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.6;
+}
+
+.badges{
+  margin-top:24px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+}
+
+.badge{
+  background:rgba(37,99,235,0.16);
+  border:1px solid rgba(37,99,235,0.35);
+  color:#dbeafe;
+  padding:10px 14px;
+  border-radius:999px;
+  font-size:14px;
+}
+
+h2{
+  margin-top:0;
+}
+
+p, li{
+  line-height:1.7;
+}
+
+.muted{
+  color:var(--muted);
+}
+
+.lesson-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:16px;
+  margin-top:18px;
+}
+
+.lesson-box{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:18px;
+}
+
+.lesson-box h3{
+  margin-top:0;
+}
+
+.method{
+  background:rgba(37,99,235,0.14);
+  border:1px solid rgba(37,99,235,0.35);
+  border-radius:14px;
+  padding:18px;
+  margin-top:16px;
+}
+
+button{
+  background:var(--blue);
+  color:white;
+  border:none;
+  border-radius:12px;
+  padding:14px 22px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:var(--blue-hover);
+}
+
+button.secondary{
+  background:transparent;
+  border:1px solid var(--soft);
+  color:white;
+}
+
+button.secondary:hover{
+  background:rgba(255,255,255,0.06);
+}
+
+.actions{
+  margin-top:24px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+}
+
+.exercise{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:16px;
+}
+
+.exercise h3{
+  margin-top:0;
+  font-size:18px;
+}
+
+.options{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
+
+.option{
+  width:100%;
+  text-align:left;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.09);
+  color:white;
+  border-radius:12px;
+  padding:14px;
+  font-size:16px;
+  line-height:1.5;
+}
+
+.option.selected{
+  border-color:rgba(37,99,235,0.8);
+  background:rgba(37,99,235,0.2);
+}
+
+.feedback{
+  display:none;
+  margin-top:12px;
+  padding:14px;
+  border-radius:12px;
+  line-height:1.6;
+}
+
+.feedback.correct{
+  display:block;
+  background:rgba(22,163,74,0.16);
+  border:1px solid rgba(22,163,74,0.35);
+}
+
+.feedback.wrong{
+  display:block;
+  background:rgba(220,38,38,0.14);
+  border:1px solid rgba(220,38,38,0.35);
+}
+
+.result{
+  display:none;
+  background:rgba(37,99,235,0.14);
+  border:1px solid rgba(37,99,235,0.35);
+  border-radius:16px;
+  padding:22px;
+  margin-top:22px;
+}
+
+.result.active{
+  display:block;
+}
+
+.score{
+  font-size:32px;
+  font-weight:bold;
+  margin:8px 0;
+}
+
+footer{
+  text-align:center;
+  padding:30px 16px 40px;
+  color:rgba(255,255,255,0.55);
+  font-size:14px;
+}
+
+@media (max-width:640px){
+  .hero h1{
+    font-size:31px;
+  }
+
+  .actions{
+    flex-direction:column;
+  }
+
+  .actions button{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>SMARTPREP LAB</header>
+
+<main>
+
+<section class="card hero">
+  <h1>Kvantitativ grund 1</h1>
+  <p>
+    Första modulen bygger säkerhet i procent, bråk och enkla metodval.
+    Målet är inte att räkna snabbt direkt, utan att få rätt tänk från början.
+  </p>
+
+  <div class="badges">
+    <div class="badge">Foundation</div>
+    <div class="badge">10 övningar</div>
+    <div class="badge">Direkt feedback</div>
+    <div class="badge">HP-förberedande</div>
+  </div>
+
+  <div class="actions">
+    <button onclick="document.getElementById('training').scrollIntoView({behavior:'smooth'})">Starta övningarna</button>
+    <button class="secondary" onclick="window.location.href='assessment.html'">Till nivåplacering</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Vad tränar du här?</h2>
+  <p class="muted">
+    Många kvantitativa HP-frågor bygger inte på svår matematik, utan på att snabbt förstå
+    vad frågan egentligen frågar efter. Den här modulen tränar de byggstenar som ofta ligger bakom
+    procentfrågor, textproblem och tabellfrågor.
+  </p>
+
+  <div class="lesson-grid">
+    <div class="lesson-box">
+      <h3>Procent</h3>
+      <p class="muted">
+        Procent betyder hundradel. 25 procent är alltså 25 av 100, eller en fjärdedel.
+      </p>
+    </div>
+
+    <div class="lesson-box">
+      <h3>Bråk</h3>
+      <p class="muted">
+        Bråk är ofta snabbare än decimaler. 1/2, 1/4, 3/4 och 1/5 återkommer ofta i olika former.
+      </p>
+    </div>
+
+    <div class="lesson-box">
+      <h3>Metodval</h3>
+      <p class="muted">
+        I HP-liknande frågor är rätt metod ofta viktigare än lång uträkning.
+      </p>
+    </div>
+  </div>
+
+  <div class="method">
+    <h3>Grundmetod</h3>
+    <p>
+      Läs frågan långsamt första gången. Stryk under vad som efterfrågas mentalt.
+      Räkna sedan med enklaste möjliga väg. Om svarsalternativen finns kan du ofta jämföra,
+      uppskatta eller eliminera istället för att räkna allt exakt.
+    </p>
+  </div>
+</section>
+
+<section id="training" class="card">
+  <h2>Övningar</h2>
+  <p class="muted">
+    Välj ett svar på varje fråga. Du får feedback direkt efter varje val.
+  </p>
+
+  <div id="exerciseContainer"></div>
+
+  <div class="actions">
+    <button onclick="showResult()">Visa resultat</button>
+    <button class="secondary" onclick="resetModule()">Börja om</button>
+  </div>
+
+  <div id="resultBox" class="result">
+    <h2>Ditt resultat</h2>
+    <div id="scoreText" class="score"></div>
+    <p id="resultText"></p>
+  </div>
+</section>
+
+</main>
+
+<footer>Beta-version av SmartPrep Lab</footer>
+
+<script>
+const exercises = [
+  {
+    q:"En tröja kostar 400 kr och sänks med 25 procent. Vad blir priset?",
+    options:["275 kr","300 kr","325 kr","350 kr"],
+    correct:1,
+    explanation:"25 procent av 400 är en fjärdedel av 400, alltså 100. 400 minus 100 blir 300 kr."
+  },
+  {
+    q:"Vilket är störst?",
+    options:["0,48","1/2","0,51","2/5"],
+    correct:2,
+    explanation:"1/2 är 0,50 och 2/5 är 0,40. Det största talet är 0,51."
+  },
+  {
+    q:"En vara höjs från 200 kr till 250 kr. Hur stor är ökningen i procent?",
+    options:["20 procent","25 procent","30 procent","50 procent"],
+    correct:1,
+    explanation:"Ökningen är 50 kr. 50 av 200 är 25 procent."
+  },
+  {
+    q:"Om 3 av 12 personer svarar ja, hur stor andel är det?",
+    options:["15 procent","20 procent","25 procent","30 procent"],
+    correct:2,
+    explanation:"3 av 12 är 1/4. En fjärdedel är 25 procent."
+  },
+  {
+    q:"En bok kostar 160 kr efter en rabatt på 20 procent. Vad var priset före rabatten?",
+    options:["180 kr","190 kr","200 kr","220 kr"],
+    correct:2,
+    explanation:"Efter 20 procent rabatt återstår 80 procent av priset. Om 80 procent är 160 kr, är 100 procent 200 kr."
+  },
+  {
+    q:"Vilket uttryck är lika med 75 procent?",
+    options:["1/2","2/3","3/4","4/5"],
+    correct:2,
+    explanation:"75 procent är 75 av 100, vilket kan förkortas till 3/4."
+  },
+  {
+    q:"Ett pris sänks med 10 procent från 600 kr. Vad blir det nya priset?",
+    options:["520 kr","530 kr","540 kr","550 kr"],
+    correct:2,
+    explanation:"10 procent av 600 är 60. 600 minus 60 blir 540 kr."
+  },
+  {
+    q:"En grupp består av 18 personer. 1/3 av gruppen går hem. Hur många är kvar?",
+    options:["6","9","12","15"],
+    correct:2,
+    explanation:"1/3 av 18 är 6. Om 6 går hem är 12 kvar."
+  },
+  {
+    q:"En vara kostar 100 kr. Den höjs först med 20 procent och sänks sedan med 20 procent. Vad kostar den till slut?",
+    options:["96 kr","100 kr","104 kr","120 kr"],
+    correct:0,
+    explanation:"Först blir priset 120 kr. Sedan sänks 120 med 20 procent, alltså 24 kr. 120 minus 24 blir 96 kr."
+  },
+  {
+    q:"Vilket svar är bäst uppskattning av 19 procent av 420?",
+    options:["40","60","80","100"],
+    correct:2,
+    explanation:"20 procent av 420 är 84. 19 procent ligger nära 80. Därför är 80 bästa uppskattningen."
+  }
+];
+
+let selectedAnswers = new Array(exercises.length).fill(null);
+
+function renderExercises(){
+  const container = document.getElementById("exerciseContainer");
+  container.innerHTML = "";
+
+  exercises.forEach(function(ex,index){
+    const wrapper = document.createElement("div");
+    wrapper.className = "exercise";
+
+    const title = document.createElement("h3");
+    title.textContent = "Fråga " + (index + 1);
+    wrapper.appendChild(title);
+
+    const question = document.createElement("p");
+    question.textContent = ex.q;
+    wrapper.appendChild(question);
+
+    const options = document.createElement("div");
+    options.className = "options";
+
+    ex.options.forEach(function(option,optIndex){
+      const btn = document.createElement("button");
+      btn.className = "option";
+      if(selectedAnswers[index] === optIndex){
+        btn.classList.add("selected");
+      }
+      btn.textContent = option;
+      btn.onclick = function(){
+        selectedAnswers[index] = optIndex;
+        renderExercises();
+      };
+      options.appendChild(btn);
+    });
+
+    wrapper.appendChild(options);
+
+    if(selectedAnswers[index] !== null){
+      const feedback = document.createElement("div");
+      const isCorrect = selectedAnswers[index] === ex.correct;
+      feedback.className = "feedback " + (isCorrect ? "correct" : "wrong");
+      feedback.innerHTML = isCorrect
+        ? "<strong>Rätt.</strong> " + ex.explanation
+        : "<strong>Inte riktigt.</strong> " + ex.explanation;
+      wrapper.appendChild(feedback);
+    }
+
+    container.appendChild(wrapper);
+  });
+}
+
+function showResult(){
+  let correct = 0;
+
+  exercises.forEach(function(ex,index){
+    if(selectedAnswers[index] === ex.correct){
+      correct++;
+    }
+  });
+
+  const resultBox = document.getElementById("resultBox");
+  const scoreText = document.getElementById("scoreText");
+  const resultText = document.getElementById("resultText");
+
+  scoreText.textContent = correct + " av " + exercises.length + " rätt";
+
+  if(correct <= 5){
+    resultText.textContent = "Bra start. Repetera gärna modulen en gång till och fokusera på förklaringarna efter varje fråga.";
+  } else if(correct <= 8){
+    resultText.textContent = "Stabil grund. Nästa steg är fler textproblem och lite mer HP-liknande frågor.";
+  } else {
+    resultText.textContent = "Mycket starkt. Du är redo för nästa modul med högre svårighetsgrad och mer tidspress.";
+  }
+
+  resultBox.classList.add("active");
+  resultBox.scrollIntoView({behavior:"smooth"});
+}
+
+function resetModule(){
+  selectedAnswers = new Array(exercises.length).fill(null);
+  document.getElementById("resultBox").classList.remove("active");
+  renderExercises();
+}
+
+renderExercises();
+</script>
+
+</body>
+</html>
